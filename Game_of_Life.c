@@ -1,5 +1,5 @@
-#include "hiker.h"
 #include <stdio.h>
+#include "Game_of_Life.h"
 
 extern int g_grid[ROW_NUM][COLUMN_NUM];
 
