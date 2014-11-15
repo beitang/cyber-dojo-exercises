@@ -1,6 +1,6 @@
-#include "hiker.h"
 #include <assert.h>
 #include <stdio.h>
+#include "Game_of_Life.h"
 
 int g_grid[ROW_NUM][COLUMN_NUM];
 int test_expected_grid[ROW_NUM][COLUMN_NUM];
