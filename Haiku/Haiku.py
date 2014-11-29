@@ -19,14 +19,22 @@ def is_syllable_letter(letter):
 		return True
 	return False
 
+def parse_one_haiku(haiku):
+	result = ""
+	lines = haiku.split('/')
+	for i in range(0, 3):
+		syllables = get_line_syllables(lines[i])
+		result += str(syllables) + ","
+	if result == "5,7,5,":
+		return result + "Yes\n"
+	return result + "No\n"
+
+
 class Haiku:
 
 	def output(self, string):
 		result = ""
-		lines = string.split('/')
-		for i in range(0, 3):
-			syllables = get_line_syllables(lines[i])
-			result += str(syllables) + ","
-		if result == "5,7,5,":
-			return result + "Yes\n"
-		return result + "No\n"
+		haikus = string.split('\n')
+		for i in haikus:
+			result += parse_one_haiku(i)
+		return result
