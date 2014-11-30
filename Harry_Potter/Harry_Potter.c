@@ -33,10 +33,11 @@ float get_min_money(int num_book1, int num_book2, int num_book3, int num_book4, 
     float ret_min_money;
     float f1 = 65535, f2 = 65535, f3 = 65535, f4 = 65535, f5 = 65535;
 
-    //printf("call now\n");
+    //printf("call now, %d, %d, %d, %d, %d\n", num_book1, num_book2, num_book3, num_book4, num_book5);
     if (min_money[num_book1][num_book2][num_book3][num_book4][num_book5] != -1)
     {
         ret_min_money =  min_money[num_book1][num_book2][num_book3][num_book4][num_book5];
+        //printf("value already exist = %f\n", ret_min_money);
     }
     else
     {
