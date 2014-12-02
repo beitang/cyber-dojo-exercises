@@ -1,40 +1,70 @@
-def get_line_syllables(line):
-	syllables = 0
-	words = line.split(" ")
-	for word in words:
-		syllables += get_word_syllables(word)
-	return syllables
+class Letter:
+	def __init__(self):
+		pass
 
-def get_word_syllables(word):
-	syllables = 0
-	if is_syllable_letter(word[0]):
-		syllables += 1
-	for i in range(1, len(word)):
-		if is_syllable_letter(word[i]) and (not is_syllable_letter(word[i - 1])):
-			syllables += 1 
-	return syllables
-	
-def is_syllable_letter(letter):
-	if letter == 'a' or letter == 'e' or letter == 'i' or letter == 'o' or letter == 'u' or letter == 'y':
-		return True
-	return False
+	def is_syllable(self):
+		if self.letter == 'a' or self.letter == 'e' or self.letter == 'i' or self.letter == 'o' or self.letter == 'u' or self.letter == 'y':
+			return True
+		return False
 
+	def set_letter(self, letter):
+		self.letter = letter
+
+class Word:
+	def __init__(self, word_string):
+		self.word_string = word_string
+		self.syllable_num = 0
+
+	def get_syllable_num(self):
+		current_letter = Letter()
+		previous_letter = Letter()
+		current_letter.set_letter(self.word_string[0])
+		if current_letter.is_syllable():
+			self.syllable_num += 1
+		for i in range(1, len(self.word_string)):
+			current_letter.set_letter(self.word_string[i])
+			previous_letter.set_letter(self.word_string[i - 1])
+			if current_letter.is_syllable() and (not previous_letter.is_syllable()):
+				self.syllable_num += 1 
+		return self.syllable_num
+		
+
+class Line:
+	def __init__(self, line_string):
+		self.line_string = line_string
+		self.syllable_num = 0
+
+	def get_syllable_num(self):
+		words = self.line_string.split(" ")
+		for word_string in words:
+			word = Word(word_string)
+			self.syllable_num += word.get_syllable_num()
+		return self.syllable_num
 
 class Haiku:
+	def __init__(self, haiku_string):
+		self.haiku_string = haiku_string
+		self.result = ""
 
-	def parse_one_haiku(self, haiku):
-		result = ""
-		lines = haiku.split('/')
-		for i in range(0, 3):
-			syllables = get_line_syllables(lines[i])
-			result += str(syllables) + ","
-		if result == "5,7,5,":
-			return result + "Yes\n"
-		return result + "No\n"
+	def get_haiku_checking_result(self):
+		lines = self.haiku_string.split('/')
+		for line_string in lines:
+			line = Line(line_string)
+			syllables = line.get_syllable_num()
+			self.result += str(syllables) + ","
+		if self.result == "5,7,5,":
+			return self.result + "Yes\n"
+		return self.result + "No\n"
 
-	def output(self, string):
-		result = ""
-		haikus = string.split('\n')
-		for i in haikus:
-			result += self.parse_one_haiku(i)
-		return result
+
+class Multiple_Haiku:
+	def __init__(self, multiple_haiku_string):
+		self.input_string = multiple_haiku_string
+		self.result = ""
+
+	def get_haiku_checking_result(self):
+		haiku_string_list = self.input_string.split('\n')
+		for haiku_string in haiku_string_list:
+			haiku = Haiku(haiku_string)	
+			self.result += haiku.get_haiku_checking_result()
+		return self.result
