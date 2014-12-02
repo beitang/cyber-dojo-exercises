@@ -1,6 +1,9 @@
 class Letter:
+	def __init__(self):
+		self.syllable_list = ['a', 'e', 'i', 'o', 'u', 'y']
+
 	def is_syllable(self):
-		if self.letter == 'a' or self.letter == 'e' or self.letter == 'i' or self.letter == 'o' or self.letter == 'u' or self.letter == 'y':
+		if self.letter in self.syllable_list:
 			return True
 		return False
 
