@@ -32,9 +32,14 @@ static void test_buy_three_books(void)
     assert(get_min_money(2, 1, 0, 0, 0) == (float)(MONEY_FOR_ONE_BOOK * 2 * DISCOUNT_FOR_TWO + MONEY_FOR_ONE_BOOK));
 }
 
-static void test_buy_example_books(void)
+static void test_buy_example_books_in_order(void)
 {
     assert(get_min_money(2, 2, 2, 1, 1) == (float)(51.599998));
+}
+
+static void test_buy_example_books_not_in_order(void)
+{
+    assert(get_min_money(2, 1, 2, 1, 2) == (float)(51.599998));
 }
 
 int main(void)
@@ -46,6 +51,7 @@ int main(void)
     test_buy_four_different_books();
     test_buy_five_different_books();
     test_buy_three_books();
-    test_buy_example_books();
+    test_buy_example_books_in_order();
+    test_buy_example_books_not_in_order();
     puts("All tests passed");
 }

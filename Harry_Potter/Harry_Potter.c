@@ -28,12 +28,65 @@ void init_min_money_array(void)
     min_money[1][1][1][1][1] = MONEY_FOR_ONE_BOOK * 5 * DISCOUNT_FOR_FIVE;
 }
 
+void exchange_num(int *num1, int *num2)
+{
+    int temp = *num1;
+
+    *num1 = *num2;
+    *num2 = temp;
+
+    return;
+}
+
+void sort_num_from_large_to_small(int *num_list, int num_count, int *sorted_list)
+{
+    int i = 0, j = 0;
+    int temp = 0;
+
+    for (i = 0; i < num_count; i++)
+    {
+        for (j = i + 1; j < num_count; j++)
+        {
+            if (num_list[i] < num_list[j])
+            {
+                temp = num_list[i];
+                num_list[i] = num_list[j];
+                num_list[j] = temp;
+            }
+            //printf("num_list[%d] = %d\n", i, num_list[i]);
+        }
+        sorted_list[i] = num_list[i];
+    }
+
+    //printf("num_list: %d, %d, %d, %d, %d\n", num_list[0], num_list[1], num_list[2], num_list[3], num_list[4]);
+    //printf("sorted_list: %d, %d, %d, %d, %d\n", sorted_list[0], sorted_list[1], sorted_list[2], sorted_list[3], sorted_list[4]);
+    return;
+}
+
 float get_min_money(int num_book1, int num_book2, int num_book3, int num_book4, int num_book5)
 {
     float ret_min_money;
     float f1 = 65535, f2 = 65535, f3 = 65535, f4 = 65535, f5 = 65535;
+    int num_list[5] = {0};
+    int sorted_list[5] = {0};
 
-    //printf("call now, %d, %d, %d, %d, %d\n", num_book1, num_book2, num_book3, num_book4, num_book5);
+    num_list[0] = num_book1;
+    num_list[1] = num_book2;
+    num_list[2] = num_book3;
+    num_list[3] = num_book4;
+    num_list[4] = num_book5;
+
+    //printf("Before sort, %d, %d, %d, %d, %d\n", num_book1, num_book2, num_book3, num_book4, num_book5);
+    sort_num_from_large_to_small(num_list, 5, sorted_list);
+    //printf("sorted_list: %d, %d, %d, %d, %d\n", sorted_list[0], sorted_list[1], sorted_list[2], sorted_list[3], sorted_list[4]);
+
+    num_book1 = sorted_list[0];
+    num_book2 = sorted_list[1];
+    num_book3 = sorted_list[2];
+    num_book4 = sorted_list[3];
+    num_book5 = sorted_list[4];
+
+    //printf("After sort, %d, %d, %d, %d, %d\n", num_book1, num_book2, num_book3, num_book4, num_book5);
     if (min_money[num_book1][num_book2][num_book3][num_book4][num_book5] != -1)
     {
         ret_min_money =  min_money[num_book1][num_book2][num_book3][num_book4][num_book5];
@@ -41,7 +94,7 @@ float get_min_money(int num_book1, int num_book2, int num_book3, int num_book4, 
     }
     else
     {
-        if (num_book5 > 1) 
+        if (num_book5 > 0) 
         {
             f5 = get_min_money(num_book1 - 1, num_book2 - 1, num_book3 - 1, num_book4 - 1, num_book5 - 1) + MONEY_FOR_ONE_BOOK * 5 * DISCOUNT_FOR_FIVE;
             f4 = get_min_money(num_book1, num_book2 - 1, num_book3 - 1, num_book4 - 1, num_book5 - 1) + MONEY_FOR_ONE_BOOK * 4 * DISCOUNT_FOR_FOUR;
@@ -51,7 +104,7 @@ float get_min_money(int num_book1, int num_book2, int num_book3, int num_book4, 
         }
         else
         {
-            if (num_book4 > 1)
+            if (num_book4 > 0)
             {
                 f4 = get_min_money(num_book1 - 1, num_book2 - 1, num_book3 - 1, num_book4 - 1, num_book5) + MONEY_FOR_ONE_BOOK * 4 * DISCOUNT_FOR_FOUR;
                 f3 = get_min_money(num_book1, num_book2 - 1, num_book3 - 1, num_book4 - 1, num_book5) + MONEY_FOR_ONE_BOOK * 3 * DISCOUNT_FOR_THREE;
@@ -60,7 +113,7 @@ float get_min_money(int num_book1, int num_book2, int num_book3, int num_book4, 
             }
             else
             {
-                if (num_book3 > 1)
+                if (num_book3 > 0)
                 {
                     f3 = get_min_money(num_book1 - 1, num_book2 - 1, num_book3 - 1, num_book4, num_book5) + MONEY_FOR_ONE_BOOK * 3 * DISCOUNT_FOR_THREE;
                     f2 = get_min_money(num_book1, num_book2 - 1, num_book3 - 1, num_book4, num_book5) + MONEY_FOR_ONE_BOOK * 2 * DISCOUNT_FOR_TWO;
@@ -68,7 +121,7 @@ float get_min_money(int num_book1, int num_book2, int num_book3, int num_book4, 
                 }
                 else
                 {
-                    if (num_book2 > 1)
+                    if (num_book2 > 0)
                     {
                         f2 = get_min_money(num_book1 - 1, num_book2 - 1, num_book3, num_book4, num_book5) + MONEY_FOR_ONE_BOOK * 2 * DISCOUNT_FOR_TWO;
                         f1 = get_min_money(num_book1, num_book2 - 1, num_book3, num_book4, num_book5) + MONEY_FOR_ONE_BOOK;
