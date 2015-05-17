@@ -14,6 +14,10 @@ test.output: test
 test: $(C_FILES) $(COMPILED_H_FILES)
 	@gcc $(CFLAGS) $(C_FILES) -o $@
 
+clean:
+	rm *.compiled_h
+	rm test
+
 # This rule ensures header files build in their own right.
 # The quality of header files is important because header files
 # are #included from other files and thus have a large span
